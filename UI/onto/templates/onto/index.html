@@ -1,0 +1,167 @@
+
+<html>
+<head>
+    {% load static %}
+   <title>Ontology Based Domain Dictionary</title>
+   {% load staticfiles %}
+   <!-- jQuery library -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script type="text/javascript">
+      window.onload = function () {
+         console.log("Onload");
+         var file = document.getElementById("uploadButton");
+         file.addEventListener('change', function (e){
+            var len=file.value.length;
+            var last=file.value.lastIndexOf(".");
+            var last1=last+1;
+            var ext=file.value.substring(last1,len);
+            console.log(ext);
+            if(ext!="txt"){
+               console.log("Use .txt file only "+ext);
+               alert("Use .txt file only");
+               return false;
+            }
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+               var fileContents = document.getElementById("textarea");
+               fileContents.innerText = fileReader.result;
+               console.log(fileReader.result);
+            }
+            fileReader.readAsText(file.files[0]);
+            return true;
+
+         });
+      }
+
+   </script>
+   <style>
+   @import url('https://fonts.googleapis.com/css?family=Raleway');
+   @import url('https://fonts.googleapis.com/css?family=Oswald');
+
+   html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+   }
+   .intro {
+    display: table;
+	height: 100%;
+	width: 100%;
+	margin: 0 auto;
+	background-image: url("/static/onto/bg2.png");
+	background-size:cover;
+	opacity: 0.8;
+   }
+   .intro .inner {
+   display: table-cell;
+   vertical-align: middle;
+   width: 100%;
+   max-width: none;
+   }
+   .content {
+   max-width: 500px;
+   margin: 0 auto;
+   text-align: center;
+   }
+   .content h1{
+   font-family: 'Raleway', sans-serif;
+   color: #FFF;
+   text-shadow: 0px 0px 300px #000;
+   font-size: 450%;
+   }
+   .btn {
+   border-radius: 9px;
+   font-family: 'Oswald', sans-serif;
+   color: #fff;
+   font-size: 135%;
+   padding: 10px 20px;
+   border: solid #fff 3px;
+   text-transform: uppercase;
+   text-decoration: none;
+   }
+   .btn:hover {
+   color: #B4E7EB;
+   border: solid #B4E7EB 3px;
+   }
+   .btn1 {
+   border-radius: 9px;
+   font-family: 'Oswald', sans-serif;
+   color: #000;
+   font-size: 100%;
+   padding: 10px 20px;
+   border: solid #000 3px;
+   text-transform: uppercase;
+   text-decoration: none;
+   }
+   .btn1:hover {
+   color: #F5A65F;
+   border: solid #F5A65F 3px;
+   }
+   .intro1 {
+   margin: 0;
+   padding: 0;
+   width: 100%;
+   height: 80%;
+   background-image: url("{% static 'onto/img/bg3.jpg' %}");
+	background-size:cover;
+	display: table;
+	top: 0;
+   }
+   .inner1 {
+   display: table-cell;
+   vertical-align: middle;
+   width: 100%;
+   }
+   .content1 {
+   width: 80vw;
+   height: 60vh;
+   background: rgba(255,255,255,0.39);
+   margin: auto;
+   border-radius: 1%;
+   display: table;
+   text-align: center;
+   font-family: 'Raleway', sans-serif;
+   color: #000;
+   text-shadow: 0px 0px 300px #000;
+   font-size: 120%;
+   }
+   textarea {
+   border-radius: 9px;
+   }
+   </style>
+</head>
+<body>
+   <section class="intro">
+	<div class="inner">
+		<div class = "content">
+		<h1>Ontology Based Domain Dictionary</h1>
+		<a href="#down" class="btn">Get Started</a>
+		</div>
+	</div>
+   </section>
+
+	<section class="intro1">
+	<div class="inner1">
+	<div class="content1"><br>
+	<h3 name="down">
+		Enter a piece of text and a domain, to get the keywords from your text based on your domain
+	</h3>
+   <form action="process/" method="post">
+    Enter URL:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="url" style="border-radius: 9px;"><br><br>OR<br><br>Enter text:<br>
+   <!--<input type="radio" name="type" value="text" checked="true">Text<br>-->
+   {%csrf_token%}<br>
+      <textarea rows="10" cols="50" name="text" id="textarea" placeholder="Text" value="{{current_text}}"></textarea>
+      <br>
+      <br>
+        OR<br><br>
+      <input type="File" value="Upload" name="upload" id="uploadButton" class="btn1">
+      <br><br>
+      <input type="submit" value="Submit" class="btn1">
+
+   </form>
+   </div>
+   </div>
+   </section>
+</body>
+</html>

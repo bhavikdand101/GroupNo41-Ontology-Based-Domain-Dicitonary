@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			console.log("Onload");
+			var file = document.getElementById("uploadButton");
+			file.addEventListener('change', function (e){
+				var len=file.value.length;
+				var last=file.value.lastIndexOf(".");
+				var last1=last+1;
+				var ext=file.value.substring(last1,len);
+				console.log(ext);
+				if(ext!="txt"){
+					console.log("Use .txt file only "+ext);
+					alert("Use .txt file only");
+					return false;
+				}
+				var fileReader = new FileReader();
+				fileReader.onload = function (e) {
+					var fileContents = document.getElementById("textarea");
+					fileContents.innerText = fileReader.result;
+					console.log(fileReader.result);
+				}
+				fileReader.readAsText(file.files[0]);
+				return true;
+
+			});
+		}
+		
+	</script>
+</head>
+<body>
+	<input type="File" value="Upload" name="upload" id="uploadButton">
+	<br>
+<form action="process/" method="post">
+	{%csrf_token%}
+<!--<input type="radio" name="type" value="text" checked="true">Text<br>!-->
+	
+	<textarea rows="10" cols="50" name="text" id="textarea" value="{{current_text}}"></textarea>
+	<br>
+	<input type="submit" value="Submit">
+	
+</form>
+</body>
+</html>
